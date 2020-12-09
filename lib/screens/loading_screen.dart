@@ -10,25 +10,22 @@ const apiKey = '24962586e02c22b6f32c6d7104a847f6';
 
 
 class LoadingScreen extends StatefulWidget {
+
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
   Position position;
-  double latitude;
-  double longitude;
 
    void getLocationAndData() async{
     Location location = Location();
     await location.getCurrentLocation();
-    latitude = location.lat;
-    longitude = location.long;
-    NetworkHelper networkHelper = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+    NetworkHelper networkHelper = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.long}&appid=$apiKey&units=metric');
     var weatherData = await networkHelper.getData();
 
     Navigator.push(context, MaterialPageRoute(builder: (context){
-      return LocationScreen();
+      return LocationScreen(locationWeather: weatherData,);
     }));
     print(weatherData);
   }
